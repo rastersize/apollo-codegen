@@ -150,7 +150,7 @@ struct GenerateCode: ParsableCommand {
         )
 
         // Make sure the folder exists before trying to generate code.
-        try fileManager.apollo.createFolderIfNeeded(at: output)
+        try fileManager.apollo.createFolderIfNeeded(at: outputDir(using: fileManager))
 
         // Actually attempt to generate code.
         try ApolloCodegen.run(
@@ -158,6 +158,17 @@ struct GenerateCode: ParsableCommand {
             with: typescriptCLIDir,
             options: codegenOptions
         )
+    }
+
+    private func outputDir(using fileManager: FileManager) -> URL {
+        let output = fileManager.makeRelativeToCurrentDirectory(path: self.output)
+
+        switch outputFormat {
+        case .single:
+            return output.deletingLastPathComponent()
+        case .multiple:
+            return output
+        }
     }
 
     private func onlyURL(using fileManager: FileManager) -> URL? {
