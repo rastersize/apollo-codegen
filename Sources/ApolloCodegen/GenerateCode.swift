@@ -86,7 +86,7 @@ struct GenerateCode: ParsableCommand {
     var only: String?
 
     @Option(
-        name: .long,
+        name: .customLong("operation-ids-path"),
         help: """
         Path to an operation id JSON map file. If specified, also stores the operation ids (hashes) as properties on
         operation types.
